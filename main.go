@@ -27,9 +27,9 @@ func main() {
 
 
 	itemList := []Items{
-		{"wash dishes", true, false},
-		{"cook dinner", true, true},
-		{"sleep", true, false},
+		{detail: "wash dishes", urgent:  true, completed: true},
+		{detail: "cook dinner", urgent: false, completed: true},
+		{detail: "sleep", urgent: false, completed: false},
 	}
 
 	app := fiber.New()
