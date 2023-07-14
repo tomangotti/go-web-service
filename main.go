@@ -20,20 +20,29 @@ type Todo struct {
 	Urgent bool
 }
 
-const (
-	host     = "localhost"
-	port     = 5432
-	user     = "postgres"
-	password = "toolman1"
-	dbname   = "mydatabase"
-)
+// const (
+// 	host     = "localhost"
+// 	port     = 5432
+// 	user     = "postgres"
+// 	password = "toolman1"
+// 	dbname   = "mydatabase"
+// )
+
+// const (
+// 	host     = "dpg-cio5v9t9aq06u3msmef0-a"
+// 	port     = 5432
+// 	user     = "todo_database_k1lt_user"
+// 	password = "4EOjxkAIA3RvWxyFfAQ6TyNZBNFxbHsb"
+// 	dbname   = "todo_database_k1lt"
+// )
 
 var db *sql.DB
 var err error
 
 func init() {
 	
-	connStr := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
+	// connStr := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
+	connStr := "postgres://todo_database_k1lt_user:4EOjxkAIA3RvWxyFfAQ6TyNZBNFxbHsb@dpg-cio5v9t9aq06u3msmef0-a.oregon-postgres.render.com/todo_database_k1lt"
 	db, err = sql.Open("postgres", connStr)
 	if err != nil {
 		log.Fatal(err)
@@ -103,10 +112,11 @@ func createTodo(c *gin.Context) {
 		log.Fatal(err)
 	}
 
-	_, err = db.Exec("INSERT INTO todos (detail, completed, urgent) VALUES ($1, $2, $3)", todo.Detail, todo.Completed, todo.Urgent)
-	if err != nil {
-		log.Fatal(err)
+	_, err2 := db.Exec("INSERT INTO todos (detail, completed, urgent) VALUES ($1, $2, $3)", todo.Detail, todo.Completed, todo.Urgent)
+	if err2 != nil {
+		log.Fatal(err2)
 	}
+
 
 	c.JSON(http.StatusCreated, todo)
 }
@@ -125,7 +135,7 @@ func getTodo(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, todo)
+	c.JSON(http.StatusOK, err)
 }
 
 func updateTodo(c *gin.Context) {
