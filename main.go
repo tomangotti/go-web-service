@@ -122,8 +122,22 @@ func createTodo(c *gin.Context) {
 		log.Fatal(err2)
 	}
 
+	rows, err := db.Query("SELECT * FROM todos")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
 
-	c.JSON(http.StatusCreated, todo)
+	todos := []Todo{}
+
+	for rows.Next() {
+		todo := Todo{}
+		rows.Scan(&todo.ID, &todo.Detail, &todo.Completed, &todo.Urgent)
+		todos = append(todos, todo)
+	}
+
+
+	c.JSON(http.StatusCreated, todos)
 }
 
 func getTodo(c *gin.Context) {
