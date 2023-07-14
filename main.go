@@ -82,8 +82,11 @@ func main() {
 	router.GET("/todos/:id", getTodo)
 	router.PUT("/todos/:id", updateTodo)
 	router.DELETE("/todos/:id", deleteTodo)
+	router.GET("/", func(c *gin.Context) {
+		
+	})
 
-	router.Run(":8080")
+	router.Run("0.0.0.0")
 }
 
 
