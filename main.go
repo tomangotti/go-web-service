@@ -2,11 +2,14 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 	"net/http"
+	"github.com/gin-contrib/cors"
+
 	"github.com/gin-gonic/gin"
-	"fmt"
-	_"github.com/lib/pq"
+
+	_ "github.com/lib/pq"
 	
 )
 
@@ -39,7 +42,7 @@ func init() {
 
 
 func main() {
-
+	
 	
 	defer db.Close()
 
@@ -51,24 +54,19 @@ func main() {
 			urgent BOOLEAN NOT NULL
 		);
 	`
-	// alterTableQuery := `
-	// 		ALTER TABLE todos ADD COLUMN urgent BOOLEAN DEFAULT false
-	// `
-
-
+	
 	_, err = db.Exec(createTableQuery)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// _, err = db.Exec(alterTableQuery)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
+	
 
 	fmt.Println("Table created successfully")
 
 	router := gin.Default()
+
+	router.Use(cors.Default())
 
 	router.GET("/todos", getTodos)
 	router.POST("/todos", createTodo)
