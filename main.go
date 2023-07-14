@@ -86,7 +86,7 @@ func main() {
 		
 	})
 
-	router.Run("0.0.0.0")
+	router.Run("3000")
 }
 
 
