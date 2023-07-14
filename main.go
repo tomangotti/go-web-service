@@ -137,7 +137,7 @@ func updateTodo(c *gin.Context) {
 		log.Fatal(err)
 	}
 
-	_, err = db.Exec("UPDATE todos SET title = $1, completed = $2, urgent = $3 WHERE id = $4", todo.Detail, todo.Completed, todo.Urgent, id)
+	_, err = db.Exec("UPDATE todos SET detail = $1, completed = $2, urgent = $3 WHERE id = $4", todo.Detail, todo.Completed, todo.Urgent, id)
 	if err != nil {
 		log.Fatal(err)
 	}
