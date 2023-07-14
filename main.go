@@ -5,12 +5,13 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
+
 	"github.com/gin-contrib/cors"
 
 	"github.com/gin-gonic/gin"
 
 	_ "github.com/lib/pq"
-	
 )
 
 type Todo struct {
@@ -82,11 +83,12 @@ func main() {
 	router.GET("/todos/:id", getTodo)
 	router.PUT("/todos/:id", updateTodo)
 	router.DELETE("/todos/:id", deleteTodo)
-	router.GET("/", func(c *gin.Context) {
-		
-	})
-
-	router.Run("3000")
+	
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "3000"
+	}
+	router.Run("0.0.0.0:" + port)
 }
 
 
