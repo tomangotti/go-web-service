@@ -21,6 +21,10 @@ type Todo struct {
 	Urgent bool
 }
 
+type errorMessage struct {
+	message string
+}
+
 // const (
 // 	host     = "localhost"
 // 	port     = 5432
@@ -52,7 +56,10 @@ func init() {
 
 
 func main() {
-	
+
+	var hanErrMes = errorMessage{
+		message: "Server Error, Try again later",
+	}
 	
 	defer db.Close()
 
@@ -64,25 +71,23 @@ func main() {
 			urgent BOOLEAN NOT NULL
 		);
 	`
-	
 	_, err = db.Exec(createTableQuery)
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	
-
 	fmt.Println("Table created successfully")
 
 	router := gin.Default()
-
 	router.Use(cors.Default())
-
 	router.GET("/todos", getTodos)
 	router.POST("/todos", createTodo)
 	router.GET("/todos/:id", getTodo)
 	router.PUT("/todos/:id", updateTodo)
 	router.DELETE("/todos/:id", deleteTodo)
+	router.GET("/errors", func(c *gin.Context){
+		c.JSON(http.StatusBadRequest, hanErrMes)
+	})
 	
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -173,6 +178,7 @@ func updateTodo(c *gin.Context) {
 
 	c.Status(http.StatusOK)
 }
+
 
 func deleteTodo(c *gin.Context) {
 	id := c.Param("id")
